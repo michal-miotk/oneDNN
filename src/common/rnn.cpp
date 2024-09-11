@@ -247,7 +247,7 @@ status_t check_dim_consistency(const rnn_desc_t &r) {
 
     const bool is_augru = utils::one_of(
             r.cell_kind, alg_kind::vanilla_augru, alg_kind::lbr_augru);
-    CHECK_DIMS(src_layer, false, T, N, SLC);
+    CHECK_DIMS(src_layer, false, T, N, SLC, 1);
     CHECK_DIMS(src_iter, true, L, D, N, SIC);
     CHECK_DIMS(src_iter_c, true, L, D, N, DHC);
     CHECK_DIMS(weights_layer, false, L, D, SLC, G, DHC);
@@ -258,7 +258,7 @@ status_t check_dim_consistency(const rnn_desc_t &r) {
         CHECK_DIMS(weights_peephole, true, L, D, 3, DHC);
     CHECK_DIMS(weights_projection, true, L, D, DHC, DIC);
     CHECK_DIMS(bias, true, L, D, G + extra_bias, DHC);
-    CHECK_DIMS(dst_layer, false, T, N, DLC);
+    CHECK_DIMS(dst_layer, false, T, N, DLC, 1);
     CHECK_DIMS(dst_iter, true, L, D, N, DIC);
     CHECK_DIMS(dst_iter_c, true, L, D, N, DHC);
 
