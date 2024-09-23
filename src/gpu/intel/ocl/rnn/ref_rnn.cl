@@ -283,9 +283,6 @@ ref_rnn_copy_res_layer(
         const float shift, const float scale, const int dequantize
 #endif
 ) {
-    for(int i=0;i<20;i++){
-        printf("286src base for idx %d is %f or %d\n", i, src_base[i], src_base[i]);
-    }
     const int it = get_global_id(2);
     const int b = get_global_id(1);
     const int s = get_global_id(0);
@@ -389,9 +386,6 @@ __kernel void ref_rnn_copy_res_iter(
 #if IS_FWD
     __global WS_STATE_DATA_T *src = src_base;
     __global OUTPUT_DATA_T *dst = (__global OUTPUT_DATA_T *)(dst_base);
-    for(int i=0;i<20;i++){
-        printf("src base for idx %d is %f or %d is %f or %d\n", i, src[i], src[i], src_base[i], src_base[i]);
-    }
     if (dst_base && s < dhc) {
         dst[dst_i_off(strides, lay, dir, b, s)] = dequantize
                 ? TO_OUTPUT(
@@ -436,10 +430,7 @@ __kernel void ref_rnn_bias_prepare(__global float *ws_bias,
         __global float *scales, __global char *wei_layer,
         __global char *wei_iter, __global BIAS_DATA_T *bias, int dhc,
         int n_layer, int n_dir, float data_shift, float data_scale,
-        int wei_l_comp_off, int wei_i_comp_off, int64x4_t bias_strides) {
-        for(int i=0;i<20;i++){
-                printf("for idx %d wws_bias is eq %f cwei_layer_ %f \n", i, ws_bias[i], wei_layer[i]);
-        }        
+        int wei_l_comp_off, int wei_i_comp_off, int64x4_t bias_strides) {     
 #if COPY_BIAS
 
     const int dhc_ = get_global_id(0);
@@ -1415,9 +1406,6 @@ ref_rnn_cell_fwd(__global const WEI_LAYER_DATA_T *wei_layer_,
         __global BIAS_DATA_T *bias_, dim_t bias_off, float alpha,
         __global float *tm_scales, dim_t mb, dim_t dhc, dim_t slc, dim_t sic,
         dim_t dhc_loop) {
-        for(int i=0;i<20;i++){
-                printf("for idx %d wieght is eq %f cell_layer_ %f \n", i, wei_layer_[i], cell_layer_[i]);
-        }
 #if !NEED_SCRATCH_GATES
     __global AUX_DATA_T *scratch_gates_ = NULL;
     dim_t scratch_gates_off = 0;
