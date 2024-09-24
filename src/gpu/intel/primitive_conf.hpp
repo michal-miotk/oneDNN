@@ -251,7 +251,7 @@ struct offsets_t {
 };
 
 struct rnn_offsets_t {
-    strides_t<4> src_layer;
+    strides_t<3> src_layer;
     strides_t<4> src_iter;
     strides_t<4> src_iter_c;
     strides_t<5> weights_layer;
@@ -259,7 +259,7 @@ struct rnn_offsets_t {
     dim_t weights_layer_comp_off;
     dim_t weights_iter_comp_off;
     strides_t<4> bias;
-    strides_t<4> dst_layer;
+    strides_t<3> dst_layer;
     strides_t<4> dst_iter;
     strides_t<4> dst_iter_c;
     strides_t<3> diff_src_layer;

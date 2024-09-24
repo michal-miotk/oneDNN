@@ -499,7 +499,7 @@ struct user_data_t : public data_helper_t {
         auto n_cells = all_iter ? conf_.n_iter - iter : 1;
         return {src_layer(), offset, cell_size * n_cells};
     }
-    strides_t<4> src_layer_strides(dim_t dir) const {
+    strides_t<3> src_layer_strides(dim_t dir) const {
         auto ret = offsets_.src_layer;
 
         // Use negative iterations stride for backwards iteration
