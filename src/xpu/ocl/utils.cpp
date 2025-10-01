@@ -178,7 +178,7 @@ const char *convert_cl_int_to_str(cl_int cl_status) {
 std::string get_kernel_name(cl_kernel kernel) {
     get_ocl_name(kernel, call_clGetKernelInfo, CL_KERNEL_FUNCTION_NAME);
 }
-}
+
 
 static std::string get_platform_name(cl_platform_id platform) {
     get_ocl_name(platform, call_clGetPlatformInfo, CL_PLATFORM_NAME);
