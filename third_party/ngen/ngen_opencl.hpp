@@ -420,7 +420,7 @@ Product OpenCLCodeGenerator<hw>::detectHWInfo(cl_context context, cl_device_id d
         const char *dummyOptions = "";
         cl_context query_context = context ? context : clCreateContext(nullptr, 1, &device, nullptr, nullptr, nullptr);
         auto binary = detail::getOpenCLCProgramBinary(query_context, device, dummyCL, dummyOptions);
-        if(!context) clReleaseContext(query_context);
+        if(!context) call_clReleaseContext(query_context);
         product = ELFCodeGenerator<hw>::getBinaryHWInfo(binary);
     }
 
