@@ -290,6 +290,7 @@ std::string get_jit_profiling_jitdumpdir() {
 }
 
 bool is_destroying_cache_safe() {
+    return true;
 #if defined(_WIN32) \
         && (defined(DNNL_WITH_SYCL) || DNNL_GPU_RUNTIME == DNNL_RUNTIME_OCL)
     // The ntdll.dll library is located in system32, therefore setting

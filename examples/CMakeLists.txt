@@ -37,6 +37,9 @@ if(DNNL_WITH_SYCL)
         append(CMAKE_CXX_FLAGS "-fsycl-targets=amdgcn-amd-amdhsa -Xsycl-target-backend --offload-arch=${DNNL_AMD_SYCL_KERNELS_TARGET_ARCH}")
     endif()
 endif()
+if(DNNL_GPU_RUNTIME STREQUAL "OCL")
+    list(APPEND EXTRA_SHARED_LIBS OpenCL::OpenCL)
+endif()
 
 # propagate sanitizer flags
 append(CMAKE_C_FLAGS "${CMAKE_CCXX_SANITIZER_FLAGS}")
