@@ -48,7 +48,7 @@ void *find_cl_symbol(const char *symbol) {
             "OpenCL.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
 #endif
     if (!handle) {
-        VERROR(common, opencl, "cannot find opencl library");
+        throw 5;
         assert(!"not expected");
         return nullptr;
     }

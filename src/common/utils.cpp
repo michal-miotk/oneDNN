@@ -13,7 +13,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 *******************************************************************************/
-
+#include <iostream>
 #ifdef _WIN32
 #include <malloc.h>
 #include <windows.h>
@@ -290,14 +290,16 @@ std::string get_jit_profiling_jitdumpdir() {
 }
 
 bool is_destroying_cache_safe() {
-    return true;
+    std::cout << "destruction" << __LINE__ << std::endl;
 #if defined(_WIN32) \
         && (defined(DNNL_WITH_SYCL) || DNNL_GPU_RUNTIME == DNNL_RUNTIME_OCL)
     // The ntdll.dll library is located in system32, therefore setting
     // additional environment is not required.
     HMODULE handle = LoadLibraryExA(
             "ntdll.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
-    if (!handle) { return false; }
+    if (!handle) { 
+        std::cout << "destruction" << __LINE__ << std::endl;
+        return false; }
 
     // RtlDllShutdownInProgress returns TRUE if the whole process terminates
     // and FALSE if DLL is being unloaded dynamically or if it’s called from
@@ -308,6 +310,7 @@ bool is_destroying_cache_safe() {
         auto ret = FreeLibrary(handle);
         assert(ret);
         MAYBE_UNUSED(ret);
+        std::cout << "destruction" << __LINE__ << std::endl;
         return false;
     }
 
@@ -316,10 +319,13 @@ bool is_destroying_cache_safe() {
     auto ret = FreeLibrary(handle);
     assert(ret);
     MAYBE_UNUSED(ret);
-
+    std::cout << "destruction" << __LINE__ << std::endl;
+    return true;
     if (is_process_termination_in_progress) {
+        std::cout << "destruction" << __LINE__ << std::endl;
         return false;
     } else {
+        std::cout << "destruction" << __LINE__ << std::endl;
         // Three scenarios possible:
         //    1. oneDNN is being dynamically unloaded
         //    2. Another dynamic library that contains statically linked
