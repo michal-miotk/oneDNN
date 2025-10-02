@@ -133,7 +133,7 @@ void free(void *ptr, cl_device_id dev, cl_context ctx) {
     using F = cl_int (*)(cl_context, void *);
     static ext_func_t<F> ext_func("clMemBlockingFreeINTEL");
     cl_platform_id platform;
-    UNUSED_OCL_RESULT(clGetDeviceInfo(
+    UNUSED_OCL_RESULT(call_clGetDeviceInfo(
             dev, CL_DEVICE_PLATFORM, sizeof(platform), &platform, nullptr));
     cl_int err = ext_func(platform, ctx, ptr);
     UNUSED_OCL_RESULT(err);
