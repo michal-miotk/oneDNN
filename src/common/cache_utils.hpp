@@ -22,6 +22,7 @@
 #include <memory>
 #include <thread>
 #include <unordered_map>
+#include <iostream>
 
 #include "oneapi/dnnl/dnnl_config.h"
 
@@ -133,6 +134,7 @@ struct lru_cache_t final : public cache_t<K, O, C, key_merge> {
     lru_cache_t(int capacity) : capacity_(capacity) {}
 
     ~lru_cache_t() override {
+        std::cout << "is_destroying_cache_safe() " << is_destroying_cache_safe();
         if (cache_mapper().empty()) return;
 
         if (!is_destroying_cache_safe()) {
