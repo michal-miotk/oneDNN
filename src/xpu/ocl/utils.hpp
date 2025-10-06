@@ -19,11 +19,15 @@
 
 #include <CL/cl.h>
 
+
+
 #if defined(__linux__)
 #include <dlfcn.h>
 #elif defined(_WIN32)
 #include "windows.h"
 #endif
+
+#include <stdexcept>
 
 #include "oneapi/dnnl/dnnl_config.h"
 
@@ -39,6 +43,13 @@ namespace impl {
     // Dynamically loaded opencl functions
 namespace {
 
+    class opencl_error : public std::runtime_error {
+public:
+    opencl_error(cl_int status_ = 0) : std::runtime_error("An OpenCL error occurred: " + std::to_string(status_)), status(status_) {}
+protected:
+    cl_int status;
+};
+
 void *find_cl_symbol(const char *symbol) {
 #if defined(__linux__)
     void *handle = dlopen("libOpencl.so.1", RTLD_NOW | RTLD_LOCAL);
@@ -48,7 +59,7 @@ void *find_cl_symbol(const char *symbol) {
             "OpenCL.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
 #endif
     if (!handle) {
-        throw 5;
+        throw opencl_error();
         assert(!"not expected");
         return nullptr;
     }
