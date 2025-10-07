@@ -155,7 +155,7 @@ namespace dynamic {
 template <typename F>
 F findOCLSymbol(const char *symbol) {
     auto f = (F) findSymbol(NGEN_OCL_LIB, symbol);
-    if (!f) throw opencl_error{CL_PLATFORM_NOT_FOUND_KHR};
+    if (!f) throw 5;
     return f;
 }
 

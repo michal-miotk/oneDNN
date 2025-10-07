@@ -153,7 +153,7 @@ include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
 add_subdirectory(src)
-add_subdirectory(examples)
+#add_subdirectory(examples)
 add_subdirectory(tests)
 
 if(DNNL_INSTALL_MODE STREQUAL "BUNDLE")
