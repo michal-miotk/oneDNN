@@ -391,6 +391,11 @@ private:
     int c_block_;
 };
 
+bool is_xd_enabled() {
+    const char* xd = std::getenv("XD");
+    return xd != nullptr && std::strcmp(xd, "1") == 0;
+}
+
 struct goi_block_t {
     goi_block_t(fma_kind_t fma_kind, bool is_dw, bool is_bwd_d, int g_block,
             int o_block, int i_block, int o_block_outer, int i_block_outer)
@@ -453,7 +458,11 @@ struct goi_block_t {
             x_block = (ab_transpose && (is_fwd || is_bwd_d)) ? 1 : vec_size;
             y_block = (x_block == 1 ? 1 : get_default_block(fma_kind, type, y));
         } else {
-            int packed_dword_elems = 32 / type.bitsize();
+            int nn = 32;
+            if (is_xd_enabled()) {
+                nn = 16;
+            }
+            int packed_dword_elems = nn / type.bitsize();
             x_block = ab_transpose ? into<int>(utils::rnd_up_pow2(x))
                                    : vec_size;
             y_block = packed_dword_elems;
