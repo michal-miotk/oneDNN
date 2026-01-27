@@ -41,6 +41,7 @@ struct primitive_desc_iterator_t : public c_compatible {
         , op_desc_(op_desc->clone())
         , attr_(attr ? *attr : primitive_attr_t())
         , hint_fwd_pd_(hint_fwd_pd)
+
         , impl_list_(engine_->get_implementation_list(op_desc_.get()))
         , last_idx_(0)
         , skip_idx_(skip_idx)

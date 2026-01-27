@@ -48,7 +48,10 @@ namespace gpu {
 
 namespace {
 using namespace dnnl::impl::prop_kind;
-
+inline bool is_xd_enabled() {
+    const char* xd = std::getenv("XD");
+    return xd != nullptr && std::strcmp(xd, "1") == 0;
+}
 // clang-format off
 const std::map<pk_impl_key_t, std::vector<impl_list_item_t>>
         impl_list_map REG_CONV_P({
@@ -89,6 +92,12 @@ get_impl_list_map() {
     static std::once_flag flag;
     std::call_once(flag, [&] {
         list_map = impl_list_map;
+         if (is_xd_enabled()) {
+            auto& fwd_list = list_map[{forward}];
+            if (!fwd_list.empty()) {
+                fwd_list.erase(fwd_list.begin());
+            }
+        }
 #if (DNNL_GPU_VENDOR == DNNL_VENDOR_INTEL) && defined(DNNL_EXPERIMENTAL)
         if (experimental::use_gpu_conv_v2()) {
             for (auto &kv : list_map) {

@@ -58,13 +58,18 @@ struct pd_data_t {
 class gen_t {
 public:
     static const int max_kernels = 16;
-
+    inline bool is_xd_enabled() {
+        const char* xd = std::getenv("XD");
+        return xd != nullptr && std::strcmp(xd, "1") == 0;
+    }
     template <typename T>
     static status_t init_pd(T *pd, impl::engine_t *engine) {
         try {
             using intel::engine_t;
             auto *intel_engine = utils::downcast<engine_t *>(engine);
-
+            if (is_xd_enabled()) {
+                return status::unimplemented;
+            }
             VDISPATCH_CONV_IC(intel_engine->mayiuse_ngen_kernels(),
                     VERBOSE_BAD_ENGINE_KIND);
             VDISPATCH_CONV_IC(
@@ -508,17 +513,26 @@ private:
 };
 
 status_t gen_fwd_t::pd_t::init(impl::engine_t *engine) {
+    if (is_xd_enabled()) {
+        return status::unimplemented;
+    }
     VDISPATCH_CONV_IC(is_fwd(), VERBOSE_BAD_PROPKIND);
     CHECK(gen_t::init_pd(this, engine));
     return status::success;
 }
 
 status_t gen_fwd_t::init(impl::engine_t *engine) {
+    if (is_xd_enabled()) {
+        return status::unimplemented;
+    }
     impl_ = std::make_shared<gen_t>();
     return impl_->init(this, engine);
 }
 
 status_t gen_fwd_t::execute(const exec_ctx_t &ctx) const {
+     if (is_xd_enabled()) {
+        return status::unimplemented;
+    }
     return impl_->execute(this, ctx);
 }
 
