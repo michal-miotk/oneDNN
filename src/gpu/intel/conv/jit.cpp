@@ -55,13 +55,15 @@ struct pd_data_t {
         CHECK(st); \
     } while (false)
 
+bool is_xd_enabled() {
+    const char* xd = std::getenv("XD");
+    return xd != nullptr && std::strcmp(xd, "1") == 0;
+}
+
 class gen_t {
 public:
     static const int max_kernels = 16;
-    inline bool is_xd_enabled() {
-        const char* xd = std::getenv("XD");
-        return xd != nullptr && std::strcmp(xd, "1") == 0;
-    }
+    
     template <typename T>
     static status_t init_pd(T *pd, impl::engine_t *engine) {
         try {
